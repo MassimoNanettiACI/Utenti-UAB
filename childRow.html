@@ -1,0 +1,76 @@
+<script>
+// ***********************  funzione di formattazione delle Child Row *****************************
+
+   function format ( d ) {
+      // console.log(d.Title);
+
+            return '<span>'+
+ 
+            '<table class="table table-responsive table-striped table-bordered display bodycontainer scrollable" cellspacing="0" width="100%" height="100%" align="center">'+
+            
+            '<tr">'+
+            '<td><b>Ruolo:</b></td>'+
+            '<td>'+d.Funzione+'</td>'+
+
+            '<td><b>Ufficio:</b></td>'+
+            '<td>'+d.Provincia+'</td>'+
+            
+            '<td><b>Postazione:</b></td>'+
+            '<td>'+d.Postazione+'</td>'+
+            '</tr>'+
+            
+// ***************
+            
+            '<tr">'+
+            '<td><b>Matricola:</b></td>'+
+            '<td>'+d.Matricola+'</td>'+
+
+            '<td><b>Referente SSI:</b></td>'+
+            '<td>'+d['Referente SSI']+'</td>'+
+            
+            '<td><b>Abilitazione GSuite:</b></td>'+
+            '<td>'+d.GSuite+'</td>'+
+            '</tr>'+
+
+// ***************
+            
+            '<tr">'+
+            '<td><b>Ruolo Community:</b></td>'+
+            '<td>'+d.Community+'</td>'+
+
+            '<td><b>Email:</b></td>'+
+            '<td>'+d.Account+'</td>'+
+            
+            '<td><b>Telefono:</b></td>'+
+            '<td>'+d.Telefono+'</td>'+
+            '</tr>'+
+
+// ***************
+            
+            '<tr>'+
+            '<td><b>Regione:</b></td>'+
+            '<td>'+d.Regione+'</td>'+
+
+            '<td><b>Ultimo Evento:</b></td>'+
+            '<td>'+d["Last Event"]+'</td>'+
+            
+            '<td><b>Data Modifica:</b></td>'+
+            '<td>'+d["Data Last Event"]+'</td>'+
+            '</tr>'+
+
+// ***************
+          
+            '<tr>'+
+            '<td colspan="12"><b>Note:</b></td>'+
+            '</tr>'+
+            '<tr>'+
+            '<td colspan="12">'+d.Note+'</td>'+
+            '</tr>'+
+
+// ***************
+
+            '</table>'+
+            '</span>';
+}
+</script>
+

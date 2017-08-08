@@ -1,0 +1,290 @@
+<script>
+// ****************** FUNZIONE CHE RENDERIZZA LA TABELLA FILTRATA CON IL PLUG_IN DATATABLES ****************************
+    function renderTable(){
+
+       $('#myTb').empty();
+
+        google.script.run
+        .withSuccessHandler(onReadData)
+        .readData()
+      }
+           
+      window.onReadData = function(dataObject){
+      // console.log("mainObject: " + JSON.stringify(dataObject))     
+      // console.log(JSON.stringify(dataObject))
+      
+        $(document).ready(function (){
+
+        if(dataObject.indexEditor== 1){
+        var myclassName = 'inputModal'
+        var myclassEdit = 'editModal'
+ //       var myclassDelete = 'deleteModal'
+        }
+        else 
+        {
+        var myclassName = 'inputModal hide'
+        var myclassEdit = 'editModal hide'
+ //       var myclassDelete = 'deleteModal'
+        }
+        
+        // ******* definisce la variabile "myTb" ***********************
+
+        var myTb = $('#myTb').DataTable({
+        
+        // ---------------------- lingua 
+        
+"oLanguage" : {         
+    "sEmptyTable":     "Nessun dato presente nella tabella",
+    "sInfo":           "Vista da _START_ a _END_ di _TOTAL_ elementi",
+    "sInfoEmpty":      "Vista da 0 a 0 di 0 elementi",
+    "sInfoFiltered":   "(filtrati da _MAX_ elementi totali)",
+    "sInfoPostFix":    "",
+    "sInfoThousands":  ".",
+    "sLengthMenu":     "Visualizza _MENU_ elementi",
+    "sLoadingRecords": "Caricamento...",
+    "sProcessing":     "Elaborazione...",
+    "sSearch":         "Cerca:",
+    "sZeroRecords":    "La ricerca non ha portato alcun risultato.",
+    
+        "oPaginate": {
+            "sFirst":      "Inizio",
+            "sPrevious":   "Precedente",
+            "sNext":       "Successivo",
+            "sLast":       "Fine"
+      },
+    
+
+    
+    "oAria": {
+        "sSortAscending":  ": attiva per ordinare la colonna in ordine crescente",
+        "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+      },
+    
+    },
+        
+        // -------------------------fine inizializza lingua
+
+        
+        dom: 'Bfrltip',
+        
+        buttons: [
+              { 
+              text: 'Inserisci',
+              className: myclassName,
+              action: function (e, dt, node, conf) { runModalInput();          
+                }
+              },
+              
+               'copyHtml5',
+               'excelHtml5',
+               {
+                extend: 'csvHtml5',
+                text: 'XLS',
+                orientation: 'landscape',
+                alignment: 'center',
+                exportOptions: {
+                    columns: [ 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ]
+                    }
+                },
+                {
+                extend: 'pdfHtml5',
+                text: 'PDF',
+                orientation: 'landscape',
+                alignment: 'center',
+                exportOptions: {
+                    columns: [ 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ]
+                    },
+                    styles: {
+                             layout: 'lightHorizontalLines',
+                             tableHeader:{
+                             fillColor:"#F0F8FF"
+                             },
+                    },
+                },
+               
+              ],
+              
+        columns: [
+        
+    //      { className: 'select-checkbox' , orderable: false, data: null, defaultContent: '' },
+ 
+          { className: 'details-control', orderable: false, data: null, defaultContent: '' },
+          
+          { data: 'N°', title:"ID" },
+          { data: 'Nome', title: "Nome"},
+          { data: 'Cognome', title: "Cognome"},
+          { data: 'Foto', title: "Foto"},
+          { data: 'Gplus', title: "GPlus"},
+          
+          { data: 'Funzione', title: "Funzione", visible: false},
+          { data: 'Provincia', title: "Ufficio", visible: false},
+          { data: 'Postazione', title: "Postazione", visible: false},
+          { data: 'Matricola', title: "Matricola", visible: false},          
+          { data: "['Referente SSI']", title: "Referente SSI", visible: false},
+          { data: 'GSuite', title: "Abilitazione GSuite", visible: false },
+          { data: 'Community', title: "Ruolo", visible: false},
+          { data: 'Account', title: "Account", visible: false},
+          { data: 'Telefono', title: "Telefono", visible: false},
+          { data: 'Note', title: "Note", visible: false},
+          { data: 'Regione', title: "Regione", visible: false},
+          { data: 'Editor', title: "Editor", visible: false},
+          { data: 'Gplus', title: "Registrazione G+", visible: true},
+          { data: 'Last Event', title: "Ultimo Evento", visible: false},
+          { data: 'Data Last Event', title: "Data Modifica", visible: false},
+
+          { className: myclassEdit,
+              orderable: false, 
+              data: null, 
+              title: "Modifica", 
+              defaultContent: '<a href="#" class="myclassEdit btn btn-outline btn-default waves-effect">Edit</a>'
+                               // + ' / ' +
+                              // '<a href="#" class="myclassDelete btn btn-outline btn-default waves-effect">Delete</a>'
+
+                },
+          ],
+          
+//        select: {
+//            style:    'os',
+//            selector: 'td:first-child'
+//        },
+
+        columnDefs: [
+
+        { targets: '_all', visible: true },
+       
+        
+        { targets: [4], data: "Foto", render: function (data, type, row) {
+            if(data == ""){ 
+                       return '<img src="https://ssl.gstatic.com/s2/contacts/images/NoPicture.gif" width="50" height="50"/>';}
+                       else 
+                       return '<img src="'+data+'" width="50" height="50"/>';}
+         },
+        { targets: [5], render: function (data, type, row) {
+            if(data == ""){
+                      // alert('ID Gplus non presente');
+                      return '<img src="https://ssl.gstatic.com/s2/contacts/images/NoPicture.gif" width="50" height="50"/>'; } 
+                      // Alert('ID Gplus presente') 
+                      else  
+                      return '<a href=\"https://plus.google.com/u/0/'+data+'\" target=\"_blank\" align="center"><img border="0" alt="Google Plus" src="https://lh3.googleusercontent.com/N-AY2XwXafWq4TQWfua6VyjPVQvTGRdz9CKOHaBl2nu2GVg7zxS886X5giZ9yY2qIjPh=w300" width="45" height="45"></a>';
+                      }
+                      },
+        { targets: [18], 
+          render: function (data, type, row) {
+            if(data == ""){
+              return '<button class="btn btn-outline btn-danger waves-effect">Incompleta</button>'; }
+              else return '<button onclick="sendHangouts('+data+')" class="btn btn-outline btn-success waves-effect">Completata</button>';}
+                        },
+ /*       { targets: [21], 
+          render: function (data, type, row) {
+               }
+             },
+   */                     
+          ],
+          
+          data: dataObject.table,
+          responsive: true,
+          scrollCollapse: true,
+          scrollY: 400,
+          paging: true,
+          paginationType: 'full',
+          order: [[ 16, 'desc' ],[ 7, 'asc' ], [ 3, 'asc' ], [ 2, 'asc' ]],
+          displayLength: 25,
+          lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+          autoWidth: true,
+
+          //    *********** Datatables Row grouping******************************
+ 
+          drawCallback: function (settings) {
+                   
+            var api = this.api();
+            var rows = api.rows( {page:'current'} ).nodes();
+            var last=null;
+ 
+            api.column(16, {page:'current'} ).data().each( function ( group, i ) {
+                if ( last !== group ) {
+                    $(rows).eq( i ).before(
+                       '<tr class="group"><td colspan="24"><b>'+group+'</b></td></tr>'
+                    );
+                    last = group;
+                }
+            });
+           }
+       });
+
+        // ******* fine definizione della variabile "myTb" ***********************
+
+
+        // ****************** Inizio della funzione di gestione del pulsante "Child Row" ********
+  
+          $('.dataTable').on('click', 'td.details-control', function () {
+          
+           // console.log('ok');           
+           // console.log(this)
+            
+              var tr = $(this).closest('tr');
+            //  console.log(this)
+            //  console.log(tr)
+              var row = myTb.row( tr );
+            //  console.log(row)
+ 
+              if ( row.child.isShown() ) {
+           // This row is already open - close it
+              row.child.hide();
+              tr.removeClass('shown');
+              }
+              else {
+           // Open this row
+              // console.log(row)
+              row.child( format(row.data()) ).show();
+              tr.addClass('shown');} 
+		      });
+              
+
+         // ------------------ Fine della funzione di gestione del pulsante "Child Row" -------------
+         
+         // -------------------- chiamata alla funzione editMode ----------------------------
+
+              myTb.$('td.editModal').on('click', function () {
+             // console.log( 'Hai cliccato per chiamare la funzione editModal ');
+                         
+             // popola la variabile "row" con il contenuto del record selezionato
+         // ------------------------            
+             var tr = $(this).closest('tr');
+             // console.log(this)
+             // console.log(tr)
+             var row = myTb.row( tr );
+             // console.log(row)
+             //row.child( runModalEdit(row.data()) ).show();
+             runModalEdit(row.data())
+             tr.addClass('shown');
+          // -----------------------
+
+               return false
+               });
+
+         // -------------------- chiamata alla funzione deleteMode ----------------------------
+
+              myTb.$('td.deleteModal').on('click', function () {
+             // console.log( 'Hai cliccato per chiamare la funzione editModal ');
+                         
+             // popola la variabile "row" con il contenuto del record selezionato
+         // ------------------------            
+             var tr = $(this).closest('tr');
+             // console.log(this)
+             // console.log(tr)
+             var row = myTb.row( tr );
+             // console.log(row)
+             //row.child( runModalEdit(row.data()) ).show();
+             runModalDelete(row.data())
+             tr.addClass('shown');
+          // -----------------------
+
+               return false
+               });
+
+           // ************************************   
+  
+                })
+    }
+</script>
+

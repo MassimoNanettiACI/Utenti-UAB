@@ -1,0 +1,218 @@
+<!-- ******** HTML EDIT MODAL ****************** -->
+
+<!----------------------- HEADER --------------------->
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  align="center">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+<!-------------------------------------------->                    
+    
+      <div class="modal-header" style="background-color:#024CDE"> 
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:white"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" style="color:white">Modifica dati utente del gruppo UABNET</h4>
+              <p class="modal-title" style="color:white">Data Modifica:
+                <span class="modal-title" id="dateLastEvent" style="color:white"></span>
+                - N° record
+                <span class="modal-title" id="N°" style="color:white"></span>
+              </p>
+      </div>
+
+<!----------------------- BODY FORM ---------------------->    
+
+          <div class="modal-body">
+            <form id='editForm' class="form-horizontal" data-toggle="validator" role="form">
+                 <!--div class='col-sm-12' >
+                      <input id="N°Disabled" type='text' class="form-control" disabled>
+                  </div-->
+                  <div class='col-sm-12' hidden >
+                      <input id="N°" type='text' name="N°" class="form-control">
+                  </div>
+              
+               <div class='input-group-inline col-sm-4' align="center">  
+                  <label>Regione</label>
+                     <select id="editRegione" value="seleziona una Regione" type= 'text' name="Regione:string" class="selectpicker" data-width="160px" data-size="7">
+                       <option selected>seleziona Regione</option> 
+                       <option>ABRUZZO</option> 
+                       <option>BASILICATA</option> 
+                       <option>CALABRIA</option> 
+                       <option>CAMPANIA</option>
+                       <option>EMILIA-ROMAGNA</option>
+                       <option>FRIULI-VENEZIA GIULIA</option>
+                       <option>LAZIO</option>
+                       <option>LIGURIA</option> 
+                       <option>LOMBARDIA</option>
+                       <option>MARCHE</option>
+                       <option>MOLISE</option>
+                       <option>PUGLIA</option>
+                       <option>SICILIA</option>
+                       <option>SARDEGNA</option>
+                       <option>TOSCANA</option>
+                       <option>TRENTINO-ALTO ADIGE/SÜDTIROL</option>
+                       <option>UMBRIA</option>
+                       <option>VENETO</option>
+                     </select>
+                 </div>  
+       
+                        <div class='input-group-inline col-sm-4' align="center">
+                          <label>Provincia</label>
+                            <select id='editProvincia' type= 'text' name="Provincia:string" class="selectpicker" data-width="160px" data-size="10"> 
+                            </select>
+                        </div>  
+
+                          <div class='input-group-inline col-sm-4' align="center">
+                          <label>Postazione</label>
+                          <input id="Postazione" type='text' name="Postazione:string" class="form-control postazione" placeholder="es: AR1PDL024" data-minlength = 1 data-maxlength = 9 data-error="max 9 caratteri" autocomplete="on">
+                          </div>               
+
+<!-------------------------------------------->                    
+
+                          <div class='input-group-inline col-sm-4' align="center">
+                          <label>Nome</label>
+                            <input id='Nome' type='text' name="Nome:string" class="form-control"  autocomplete="on" required>
+                          </div>
+                          
+                          <div class='input-group-inline col-sm-4' align="center">
+                          <label>Cognome</label>
+                          <input id='Cognome' type='text' name="Cognome:string" class="form-control"  autocomplete="on" required>
+                          </div>
+                          
+                          <div class='input-group-inline col-sm-4' align="center">
+                          <label>Account</label>
+                            <input id="Account" type='email' name="Account:string" class="form-control" placeholder="ex: m.rossi@aci.it" autocomplete="on" required>
+                          </div>
+                          
+<!--------------------------------------------> 
+
+                          <div class='input-group-inline col-sm-4' align="center">
+                          
+                          <label>GSuite</label>
+                            <img id="imgGsuite" hspace= 5 vspace=5>
+                            <select id="Gsuite" type='text' name="GSuite:string" class="selectpicker" data-width="160px">
+                                    <option>Abile</option>
+                                    <option>Richiesto</option>
+                                    <option>Non richiesto</option>
+                            </select>
+
+                          </div>  
+
+                          <div class='input-group-inline col-sm-4' align="center">
+                          <label>ID Google Plus</label>
+                          <a href="" id="hrefGplus">
+                            <img id="imgGplus" hspace= 5 vspace=5>
+                          </a>  
+                            <input id="Gplus" type='number' name="Gplus:string" class="form-control" placeholder="es.: 123456789012345678901" data-minlength = "1" data-maxlength = "21" data-error="max 21 numeri" required>
+                          </div>  
+
+                          <div class='input-group-inline col-sm-4' align="center">
+                          <label>Foto</label>
+                            <img id="imgFoto" hspace= 5 vspace=5 alt="https://plus.google.com/_/focus/photos/public/...">
+                            <input id="Foto" type='string' name='Foto:string' class='form-control foto' placeholder="https://plus.google.com/_/focus/photos/public/... " required>
+
+                          </div>  
+                                                 
+<!--------------------------------------------> 
+<hr />
+
+                          <div class='input-group-inline col-sm-4' >
+                          <label>Matricola</label>
+                          
+                          <input id="Matricola" type='number' name="Matricola:string" class="form-control matricola" placeholder="es: 530406" data-minlength = 1 data-maxlength = 6 data-error="max 6 numeri">
+                          </div>
+                         
+                          <div class='input-group-inline col-sm-4' >
+                          <label>Funzione</label>
+                            <select id="Funzione" type= 'text' name="Funzione:string" class="selectpicker" data-width="160px" data-size="4">
+                                    <option id='Funzione'></option>                             
+                                    <option>D.COMP.TLU</option>
+                                    <option>Sportello UAB</option>
+                                    <option>Retrosportello</option>
+                                    <option>RUT</option>
+                                    <option>SGTA</option>
+                                    <option>SSI</option>
+                                    <option>DIES</option>
+                            </select>
+                          </div>  
+                  
+                         
+                          <div class='input-group-inline col-sm-4' >
+                          <label>Community</label>
+                            <select id="Community" type= 'text' name="Community:string" class="selectpicker" data-width="160px">
+                                    <option id='community'></option>
+                                    <option>Membro</option>
+                                    <option>Invitato</option>
+                                    <option>Non invitato</option>
+                                    <option>Moderatore</option>
+                                    <option>Proprietario</option>
+                            </select>
+                          </div>  
+
+<!--------------------------------------------> 
+
+            <div class='input-group-inline col-sm-12' >
+
+              <div class='input-group-inline col-sm-4'>
+                <label>Telefono</label>
+                <input id="Telefono" type='tel' name="Telefono:string" class="form-control pull-left" 
+                       placeholder="ex: 071-1234567" data-width="160px" 
+                       pattern="{1}[1-]{7,8}" title="il dato è composto dal prefisso e numeri separati da '-'; Sono consentiti da 8 a 9 caratteri."
+                       min="8" max="9">
+              </div>
+              
+              <div class='input-group-inline col-sm-4 pull-right'>
+                <label>Editor</label>
+                  <select id="Editor" type= 'text' name="Editor:string" class="selectpicker" data-width="160px">
+                    <option id='Editor'></option> 
+                    <option selected>m.nanetti@aci.it</option>
+                    <option>g.arcidiacono@aci.it</option>
+                    <option>c.mugnai@aci.it</option>
+                  </select>
+              </div> 
+              
+              <div class='input-group-inline col-sm-4 pull-right'>
+                <label>Referente SSI</label>
+                  <select id="Referente-ssi"type= 'text' name="Referente SSI:string" class="selectpicker" data-width="160px">
+                    <option>Arcidiacono</option>
+                    <option>Granaiola</option>
+                    <option>Flauto</option>
+                    <option>Lo Grasso</option>
+                    <option>Malagoli</option>
+                    <option selected>Mugnai</option>
+                    <option>Nanetti</option>
+                    <option>Volpi</option>
+                  </select>
+              </div>
+              
+            </div>
+            
+<!--------------------------------------------> 
+   
+            <div class='input-group-inline col-sm-12'>
+              <label>Note</label>
+              <input id="Note" type='text' name="Note:string" class="form-control">
+            </div>
+
+<!--------------------------------------------> 
+          
+        </form>       
+      </div>
+
+<!--------------------------------------------> 
+
+      <div id='modal-edit' class="modal-footer">
+        
+        <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Chiudi</button>
+        <!-- div id="callHangouts"></div -->
+        <!-- div><g:hangout render="createhangout" invites="[{ id :'m.nanetti@aci.it', invite_type:'EMAIL'}]"/></div -->
+        <button id="sendEditForm" type="submit" class="btn btn-secondary pull-right">Salva</button>
+        
+      </div>
+
+<!--------------------------------------------> 
+      
+    </div>
+  </div>
+</div>
+
+<!-- ******** HTML EDIT MODAL (FINE) ********** -->
+

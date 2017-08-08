@@ -1,0 +1,65 @@
+<script>
+
+// lato client-javascript: apre la form-modal e ne gestisce gli eventi 
+
+function runModalInput(row){ 
+
+   var dateInputEvent = new Date()
+   $('#dateInputEvent').text(dateInputEvent.getDate() + '/' + (dateInputEvent.getMonth() + 1) + '/' +  dateInputEvent.getFullYear())
+   
+   // console.log(JSON.stringify(row))
+   // console.log('Sei dentro runModalInput')   
+
+      $('#exFlussoModal').modal('show');
+      $('#formExFlusso').validator() 
+
+// ------------------------------------       
+
+        $('#sendExFlusso').on('click', function(e){
+        console.log('cliccato il pulsante SALVA');
+        console.log(e);
+        
+        if (e.isDefaultPrevented()) {  
+             // se il form non supera la validazione mostra il messaggio ed interrompe le operazioni successive
+             console.log('form input INVALID')
+             $('#exFlussoModal').modal('hide')                   // chiude la finestra modal  
+             
+             } else {   
+
+             console.log('form input valido')
+             var objExFlusso = $('#formExFlusso').serializeJSON()  // inserisce tutti i campi presenti nel form NON della inputModal!!!
+             objExFlusso['Last Event'] = 'INSERITO'
+             objExFlusso['Data Last Event'] = (dateInputEvent.getDate() + '/' + (dateInputEvent.getMonth() + 1) + '/' +  dateInputEvent.getFullYear())
+             console.log(JSON.stringify(objExFlusso))     
+
+             sendExFlusso(objExFlusso)
+             $('#exFlussoModal').modal('hide')
+             
+         return false
+         }     
+       })  
+   }
+
+// ------------------------------------ 
+// listener su cambio regione nel form 
+// $('#Regione').on('click', function(){
+  // lancia getRegioni() 
+// })
+
+$('#Regione').on('change',function(){
+    var regioneSelected = $('#Regione').val()
+    console.log('hai cambiato la regione in ' + regioneSelected)
+    google.script.run
+    .withSuccessHandler(onSuccess)
+    .getProvincie(regioneSelected)
+    $('#Provincia').removeAttr('disabled')
+    
+    function onSuccess(province){   
+      console.log(province)  
+      clearInputSelect()
+      populateInputSelect(province)
+    }
+})
+
+</script>
+

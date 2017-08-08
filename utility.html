@@ -1,0 +1,145 @@
+<script>
+// -------------------------------------
+// UTILITY: EDITMODAL
+// -------------------------------------
+// Gestione delle select:option #editProvincia
+// richiama la funzione getEditProvince sul db che carica #editProvincia select:option
+
+        function getEditProvincie(regione, provincia, callback){           
+         // alert('avvia ricerca sul server')
+         // console.log('avvia: getEditProvince')
+          google.script.run
+          .withSuccessHandler(onSuccess)
+          .getProvincieFromDb(regione)
+        
+        function onSuccess(province){   
+          console.log("province nelle option=" + province)  
+          clearEditSelect()   
+          populateEditSelect(province, provincia)
+          callback()
+          }
+        
+        return false
+        } 
+        
+// -------------------------------------
+// UTILITY: EDITMODAL
+// -------------------------------------
+// rimuove eventuali #editProvincia select:option precedentemente caricate
+
+        function clearEditSelect(){                   
+           console.log('inizia cancellazione')
+           $('#editProvincia')
+             .find('option')
+             .remove()
+             .end()
+             .append('<option value="resetted">Seleziona la Provincia</option>')
+             .val('resetted')
+             ;
+             console.log('cancellate le voci dalla select')
+           }
+           
+// -------------------------------------
+// UTILITY: EDITMODAL
+// -------------------------------------
+// appende le select:option ricavate dal server 
+// aggiunge l'option vuota che permette a bootstrap-validator di non validare il campo se non selezionato  
+// poi inserisce nella option gli elementi id, text, e value quest'ultimi sono uguali.
+
+        function populateEditSelect(province) {   
+          console.log('populateSelect #editProvincia' + province)
+          for(var i = 0; i < province.length; i++) {
+            var opt = province[i];
+            var el = document.createElement("option");
+            el.id = i+1
+            el.text = opt;
+            el.value = opt;
+            $('#editProvincia').append($('<option>').text(el.text));
+            };
+            $('.selectpicker').selectpicker('refresh');  
+            console.log('populatedSelect') 
+            console.log('refreshedSelect')
+        };   
+          
+// -------------------------------------
+// UTILITY: EDITMODAL
+// -------------------------------------
+// lancia la funzione salvaDati sul db al click del pulsante "SALVA" 
+
+         function sendEditForm(object){    
+         
+           console.log('chiamata alla funzione di salvaDati da sendEditForm')
+           google.script.run
+           .withSuccessHandler(onSuccess)
+           .withFailureHandler(onError)
+           .salvaDati(object)
+           
+           function onSuccess(message){
+           console.log("record inserito: " + message)
+           }
+           
+           function onError(message){
+           console.log("processo in errore" + message)
+           }
+         }
+
+// -------------------------------------
+// UTILITY: INPUTMODAL
+// -------------------------------------
+// lancia la funzione salvaDati sul db al click del pulsante "SALVA" 
+
+  function sendExFlusso(objExFlusso){
+    console.log('sendExFlusso')
+      google.script.run
+        .withSuccessHandler(onSentExFlusso)
+        .withFailureHandler(onErrorExFlusso)
+        .insertExFlusso(objExFlusso)
+        }
+
+  function onSentExFlusso(message){
+    // console.log("record inserito" + message)
+    }
+
+  function onErrorExFlusso(message){
+    // console.log("processo in errore" + message)
+    }
+    
+    
+// -------------------------------------
+// UTILITY: INPUTMODAL
+// -------------------------------------
+// lato client: recupera dal server (spreadsheet) 
+
+function clearInputSelect(){
+console.log('inizia cancellazione')
+$('#Provincia')
+    .find('option')
+    .remove()
+    .end()
+    .append('<option value="resetted">Seleziona la Provincia</option>')
+    .val('resetted')
+;
+  console.log('cancellate le voci dalla select')
+}
+
+// -------------------------------------
+// UTILITY: INPUTMODAL
+// -------------------------------------
+// aggiunge l'option vuota che permette a bootstrap-validator di non validare il campo se non selezionato  
+// poi inserisce nella option gli elementi id, text, e value quest'ultimi sono uguali.
+
+function populateInputSelect(province) { 
+
+  console.log('populateSelect')
+  for(var i = 0; i < province.length; i++) {
+  var opt = province[i];
+  var el = document.createElement("option");
+  el.id = i+1
+  el.text = opt;
+  el.value = opt;
+  $('#Provincia').append($('<option>').text(el.text));
+  };
+  $('.selectpicker').selectpicker('refresh');  
+  };    
+ 
+</script>

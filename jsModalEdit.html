@@ -1,0 +1,166 @@
+<script>
+// ***********************************
+
+function runModalEdit(data){ 
+console.log('runModalEdit')
+$('#editModal').modal('show');
+
+       var dateLastEvent = moment().format('L'); 
+       $('#dateLastEvent').text(dateLastEvent)
+       // var idRow = data['N°']; 
+       $('#N°').text(data['N°'])
+       
+       var regioneSelected = data.Regione;     // Assegnazione a inizio ciclo per la ricerca delle select:option #editProvince
+       var provincia = data.Provincia;
+
+// --------------------------------------------------------           
+// imposta la funzione di callback che popolerà la provincia dopo aver popolato le option della select #editProvincia
+
+       function selectProvincia(){
+          console.log('callback select ' + provincia);
+            $('#editProvincia').val(provincia);
+            $('.selectpicker').selectpicker('refresh');  // aggiorna tutte le select 
+        }
+
+// --------------------------------------------------------           
+   
+       getEditProvincie(regioneSelected, provincia, selectProvincia);  
+       populateForm(data)
+       $('.selectpicker').selectpicker('refresh')
+       $('#editForm').validator();
+       return false
+   }
+
+// ------------------------------------      
+// listener su cambio regione nel form 
+             
+         $('#editRegione').on('change', function(){  // listener per selezionare le select:option di #Provincia
+        
+           var regioneSelected = $(this).find("option:selected").val();
+
+           getEditProvincie(regioneSelected)
+                  
+           $('.selectpicker').selectpicker('refresh');  // aggiorna le select #editRegione
+         });   
+
+// ------------------------------------       
+// salva i dati al click del pulsante SALVA
+         $('#sendEditForm').on('click', function(e){
+         console.log('cliccato il pulsante SALVA');
+
+         
+         if (e.isDefaultPrevented()) {  
+             // se il form non supera la validazione mostra il messaggio ed interrompe le operazioni successive
+             console.log('form edit INVALID')
+             $('#editModal').modal('hide')                     // chiude la finestra modal  
+             
+             } else {   
+
+             console.log('form edit valido')
+             
+             var objEditForm = $('#editForm').serializeJSON()  // inserisce tutti i campi presenti nel form NON della editModal!!!
+             objEditForm['Last Event'] = 'MODIFICATO';
+             objEditForm['Data Last Event'] = moment().format('L'); 
+             console.log(JSON.stringify(objEditForm))
+             
+             sendEditForm(objEditForm)                         // invia il form per il salvataggio sul server
+
+             $('#editModal').modal('hide')                     // chiude la finestra modal
+             // alert('cancella cache')
+             
+             $('#myTb').DataTable().destroy();                 // elimina cache della tabella 
+             // alert('ricarica #myTb')
+             renderTable()                                     // renderizza la tabella da capo (F5)
+             return false
+           }     
+         });
+ 
+      
+// ------------------------------------  popola la editForm con i dati del record selezionato 
+ function populateForm(data){
+
+        $("#editRegione option").filter(function(){
+          return $.trim($(this).text()) == data.Regione
+          }).prop('selected', true);
+// --------------------------------------------------------  
+        $('#Postazione').val(data.Postazione);
+// --------------------------------------------------------  
+        $('#Nome').val(data.Nome);
+        $('#Cognome').val(data.Cognome);
+        $('#Account').val(data.Account);  
+// --------------------------------------------------------  
+        var imgGsuite ='https://86cac25d-a-e08f34c4-s-sites.googlegroups.com/a/aci.it/prototipo-uab-toscana/g-suite.png?attachauth=ANoY7cr1la1wmYy5bWueiYL7TeImVwPavnLLEwZplyGRqvLKyJaUoePc-0SPQZUiIkAqKm9BnXkNedwIZU95viBR0ubZEBFP1OnmlW3PNbg316q_ntg3b2lblTdJHhxp0t8HGDCDyLhA7Vqs26nfgJ0I6VyFs95hdfB7JGE2MV8ZxZEC6o3O-_5P9c3nSfdqV_bJDZ4ELQ0zqZIoUr_TB-mtzfK_W3DV2A%3D%3D&attredirects=0'
+        $("#imgGsuite").attr({        
+          title: "GSuite di " +data.Nome+" "+data.Cognome+" ", 
+          target: "_blank", 
+          align: "center",
+          src: imgGsuite,
+          height: 72,
+          width: 72,
+          border: "0",
+          alt: "Google Plus",
+          });
+          
+        $("#GSuite option").filter(function(){
+          return $.trim($(this).text()) ==  data.GSuite
+          }).prop('selected', true);
+          
+// --------------------------------------------------------  
+        var hrefGplus = 'https://plus.google.com/u/0/'+data.Gplus
+        $("#hrefGplus").attr({
+          href: hrefGplus,
+          target: "_blank"});
+        
+        var imgGplus ='https://lh3.googleusercontent.com/N-AY2XwXafWq4TQWfua6VyjPVQvTGRdz9CKOHaBl2nu2GVg7zxS886X5giZ9yY2qIjPh=w300'
+        $("#imgGplus").attr({        
+          title: "profilo Gplus di " +data.Nome+" "+data.Cognome+" ", 
+          target: "_blank", 
+          align: "center",
+          src: imgGplus,
+          height: 72,
+          width: 72,
+          border: "0",
+          alt: "Google Plus",
+          });
+        
+        $('#Gplus').val(data.Gplus);
+// --------------------------------------------------------         
+        $("#imgFoto").attr({        
+          title: "foto di " +data.Nome+" "+data.Cognome+" ", 
+          target: "_blank", 
+          align: "center",
+          src: data.Foto,
+          height: 72,
+          width: 72,
+          });
+        $('#Foto').val(data.Foto);
+// --------------------------------------------------------         
+        $('#Matricola').val(data.Matricola);
+// --------------------------------------------------------        
+        $("#Funzione option").filter(function(){
+          return $.trim($(this).text()) ==  data.Funzione
+          }).prop('selected', true);
+// --------------------------------------------------------        
+        $("#Community option").filter(function(){
+          return $.trim($(this).text()) ==  data.Community
+          }).prop('selected', true);
+// --------------------------------------------------------        
+        $('#Telefono').val(data.Telefono);
+// --------------------------------------------------------  
+        $("#Referente-ssi option").filter(function(){
+          return $.trim($(this).text()) ==  data['Referente SSI']
+          }).prop('selected', true);
+// --------------------------------------------------------        
+        $("#Editor option").filter(function(){
+          return $.trim($(this).text()) ==  data.user
+          }).prop('selected', true);
+// --------------------------------------------------------        
+        $('#Note').val(data.Note);
+        $('#N°').val(data['N°'] );
+//        $('#N°Disabled').val(data['N°'] );
+// --------------------------------------------------------        
+//        $('<g:hangout render="createhangout" invites="[{ id :\''+ data.Account + '\', invite_type:\'EMAIL\'}]" />').append( '#callHangouts' );
+// --------------------------------------------------------        
+}
+
+</script>
